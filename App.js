@@ -40,7 +40,9 @@ export default class CameraScene extends Component {
   cameraRender = () => {
     <RNCamera ref={ref => { this.camera = ref; }} style={styles.camera} type={this.state.type}
       flashMode={this.state.flash} autoFocus={this.state.autoFocus} zoom={this.state.zoom}
-      whiteBalance={this.state.whiteBalance} focusDepth={this.state.depth}
+      whiteBalance={this.state.whiteBalance} focusDepth={this.state.depth} 
+      /*onTextRecognized={this.textRecognizedEvent}*/
+      onBarCodeRead={this.barcodeReadEent}
       permissionDialogTitle={'Permiso para usar la camara'}
       permissionDialogMessage={'Necesitas el permiso para usar la camara'}>
       <View style={styles.containerCamera}>
@@ -54,14 +56,18 @@ export default class CameraScene extends Component {
           <Text style={styles.textButton}> Balance : {this.state.whiteBalance}</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.containerControls}>
+      <View style={styles.containerZoom}>
         <Slider
-          value={this.state.zoom}
-          onValueChange={zoom => this.setState({ zoom })}
+          style={styles.slider}
+          step={0.1}
+          maximumValue={1}
+          onValueChange={this.zoomEvent}
         />
       </View>
+      <View style={styles.containerControls}>
+        <Text>Controls</Text>
+      </View>
     </RNCamera>
-
   }
   flashEvent = () => {
     this.setState({
@@ -81,6 +87,20 @@ export default class CameraScene extends Component {
     this.setState({
       whiteBalance: whiteBalanceOrder[this.state.whiteBalance]
     });
+  }
+  zoomEvent = (value) => {
+    this.setState({
+      zoom : value
+    });
+  }
+
+  textRecognizedEvent = ({text}) => {
+    console.log(text);
+  }
+
+  barcodeReadEent = ({data, type}) => {
+    console.log(data);
+    console.log(type);
   }
 
   render() {
@@ -126,9 +146,15 @@ const styles = StyleSheet.create({
   slider: {
     width: 300,
   },
+  containerZoom: {
+    flex: 0.3,
+    borderWidth: 1,
+    borderColor: 'red',
+    flexDirection: 'row'
+  },
   containerControls: {
-    flex: 0.5,
+    flex: 0.2,
     flexDirection: 'row',
     alignSelf: 'flex-end'
-  }
+  },
 });

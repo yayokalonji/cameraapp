@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Button,Image} from 'react-native';
+import OfflineNoticeBar from './offline-notice-bar';
 
 class HomeScene extends Component {
 
@@ -16,6 +17,7 @@ class HomeScene extends Component {
         const { navigation } = this.props;
         return (
             <View>
+                <OfflineNoticeBar />
                 <Text> Home :) </Text>
                 <Button title="Abrir Camara" onPress={() => navigation.navigate('CameraScreen', { onResult: this.onResult })}></Button>
                 <Image
